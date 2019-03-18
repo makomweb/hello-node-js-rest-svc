@@ -13,6 +13,10 @@ app.get('/api/courses/:id', (request, response) => {
     response.send(request.params.id);
 });
 
+app.get('/api/posts/:year/:month', (req, res) => {
+    res.send(req.params);
+});
+
 // PORT
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
