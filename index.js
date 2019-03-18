@@ -16,6 +16,16 @@ app.get('/api/courses', (req, res) => {
     res.send(courses);
 });
 
+app.post('/api/courses', (req, res) => {
+    const newId = courses.length + 1;
+    const course = {
+        id: newId,
+        name: req.body.name
+    };
+    courses.push(course);
+    res.send(course);
+});
+
 app.get('/api/courses/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const course = courses.find(c => c.id === id);
