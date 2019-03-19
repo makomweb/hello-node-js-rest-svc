@@ -10,3 +10,5 @@ Set environment variable for port
 `$env:PORT=5000`
 
 To configure the port where the HTTP server is listening.
+
+4. install joi `npm i joi` or at version 13.1.0 `npm i joi@13.1.0`
