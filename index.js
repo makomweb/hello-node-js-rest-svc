@@ -19,11 +19,10 @@ app.get('/api/courses', (req, res) => {
 
 app.post('/api/courses', (req, res) => {
 
-    const validationResult = validateCourse(req.body);
+    const { error } = validateCourse(req.body);
 
-    if (validationResult.error) {
-        // 400 Bad Request
-        res.status(400).send(validationResult.error.details[0].message);
+    if (error) {
+        res.status(400).send(error.details[0].message);
         return;
     }
 
@@ -54,11 +53,10 @@ app.put('/api/courses/:id', (req, res) => {
         res.status(404).send(`No course for ID ${id}!`);
 
     } else {
-        const result = validateCourse(req.body);
-
-        if (result.error) {
+        const { error } = validateCourse(req.body);
+        if (error) {
             // 400 Bad Request
-            res.status(400).send(validationResult.error.details[0].message);
+            res.status(400).send(error.details[0].message);
             return;
         }
         else {
