@@ -18,10 +18,12 @@ app.get('/api/courses', (req, res) => {
 
 app.post('/api/courses', (req, res) => {
     const newId = courses.length + 1;
+    const newName = req.body.name;
     const course = {
         id: newId,
-        name: req.body.name
+        name: newName
     };
+
     courses.push(course);
     res.send(course);
 });
