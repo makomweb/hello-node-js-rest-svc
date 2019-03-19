@@ -67,6 +67,18 @@ app.put('/api/courses/:id', (req, res) => {
     }
 });
 
+app.delete('/api/courses/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const course = courses.find(c => c.id === id);
+    if (!course) {
+        res.status(404).send(`No course for ID ${id}!`);
+    } else {
+        const index = courses.indexOf(course);
+        courses.splice(index, 1);
+        res.send(course);
+    }
+});
+
 // PORT
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
