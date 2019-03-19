@@ -26,7 +26,7 @@ app.post('/api/courses', (req, res) => {
 
     if (validationResult.error) {
         // 400 Bad Request
-        res.status(400).send(validationResult.error);
+        res.status(400).send(validationResult.error.details[0].message);
         return;
     }
 
