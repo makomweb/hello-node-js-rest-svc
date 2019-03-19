@@ -18,11 +18,8 @@ app.get('/api/courses', (req, res) => {
 });
 
 app.post('/api/courses', (req, res) => {
-    const schema = {
-        name: Joi.string().min(3).required()
-    };
 
-    const validationResult = Joi.validate(req.body, schema);
+    const validationResult = validateCourse(req.body);
 
     if (validationResult.error) {
         // 400 Bad Request
@@ -57,15 +54,14 @@ app.put('/api/courses/:id', (req, res) => {
         res.status(404).send(`No course for ID ${id}!`);
 
     } else {
-        const schema = {
-            name: Joi.string().min(3).required()
-        };
+        const result = validateCourse(req.body);
 
-        const validationResult = Joi.validate(req.body, schema);
-
-        if (validationResult.error) {
+        if (result.error) {
+            // 400 Bad Request
             res.status(400).send(validationResult.error.details[0].message);
-        } else {
+            return;
+        }
+        else {
             const newName = req.body.name;
             course.name = newName;
             res.send(course);
@@ -78,3 +74,11 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`listening on port ${port}`);
 });
+
+function validateCourse(course) {
+    const schema = {
+        name: Joi.string().min(3).required()
+    };
+
+    return Joi.validate(course, schema);
+}
