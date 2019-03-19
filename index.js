@@ -50,6 +50,29 @@ app.get('/api/courses/:id', (req, res) => {
     res.send(course);
 });
 
+app.put('/api/courses/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const course = courses.find(c => c.id === id);
+    if (!course) {
+        res.status(404).send(`No course for ID ${id}!`);
+
+    } else {
+        const schema = {
+            name: Joi.string().min(3).required()
+        };
+
+        const validationResult = Joi.validate(req.body, schema);
+
+        if (validationResult.error) {
+            res.status(400).send(validationResult.error.details[0].message);
+        } else {
+            const newName = req.body.name;
+            course.name = newName;
+            res.send(course);
+        }
+    }
+});
+
 // PORT
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
