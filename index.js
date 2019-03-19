@@ -18,13 +18,8 @@ app.get('/api/courses', (req, res) => {
 });
 
 app.post('/api/courses', (req, res) => {
-
     const { error } = validateCourse(req.body);
-
-    if (error) {
-        res.status(400).send(error.details[0].message);
-        return;
-    }
+    if (error) return res.status(400).send(error.details[0].message);
 
     const newId = courses.length + 1;
     const newName = req.body.name;
@@ -40,43 +35,31 @@ app.post('/api/courses', (req, res) => {
 app.get('/api/courses/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const course = courses.find(c => c.id === id);
-    if (!course) {
-        res.status(404).send(`No course for ID ${id}!`);
-    }
+    if (!course) return res.status(404).send(`No course for ID ${id}!`);
     res.send(course);
 });
 
 app.put('/api/courses/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const course = courses.find(c => c.id === id);
-    if (!course) {
-        res.status(404).send(`No course for ID ${id}!`);
+    if (!course) return res.status(404).send(`No course for ID ${id}!`);
 
-    } else {
-        const { error } = validateCourse(req.body);
-        if (error) {
-            // 400 Bad Request
-            res.status(400).send(error.details[0].message);
-            return;
-        }
-        else {
-            const newName = req.body.name;
-            course.name = newName;
-            res.send(course);
-        }
-    }
+    const { error } = validateCourse(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    const newName = req.body.name;
+    course.name = newName;
+    res.send(course);
 });
 
 app.delete('/api/courses/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const course = courses.find(c => c.id === id);
-    if (!course) {
-        res.status(404).send(`No course for ID ${id}!`);
-    } else {
-        const index = courses.indexOf(course);
-        courses.splice(index, 1);
-        res.send(course);
-    }
+    if (!course) return res.status(404).send(`No course for ID ${id}!`);
+
+    const index = courses.indexOf(course);
+    courses.splice(index, 1);
+    res.send(course);
 });
 
 // PORT
